@@ -2,14 +2,14 @@ package com.guillh.screenfile.model;
 
 import com.fasterxml.jackson.annotation.JsonAlias;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import lombok.Getter;
-import lombok.Setter;
-import lombok.ToString;
+import lombok.*;
 
 @Getter
 @Setter
 @ToString
 @JsonIgnoreProperties(ignoreUnknown = true)
+@AllArgsConstructor
+@NoArgsConstructor
 public class SerieData {
     @JsonAlias("Title")
     String title;
@@ -25,6 +25,5 @@ public class SerieData {
     Integer seasons;
     @JsonAlias("Plot")
     String plot;
-
 }
 
