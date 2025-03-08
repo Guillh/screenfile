@@ -46,18 +46,18 @@ public class Main {
                                         )
                                         .toList();
 
-        episodeDataList.forEach(System.out::println);
-
-        System.out.println("\nType a episode name that you want to find: ");
-        String titleSlice = read.nextLine();
-        Optional<EpisodeData> collectedEpisode = episodeDataList.stream()
-                       .filter(episodeData -> episodeData.getTitle().toUpperCase().contains(titleSlice.toUpperCase()))
-                       .findFirst();
-        if(collectedEpisode.isPresent()) {
-            System.out.println(collectedEpisode.get());
-        } else {
-            System.out.println("Episode not find!");
-        }
+//        episodeDataList.forEach(System.out::println);
+//
+//        System.out.println("\nType a episode name that you want to find: ");
+//        String titleSlice = read.nextLine();
+//        Optional<EpisodeData> collectedEpisode = episodeDataList.stream()
+//                       .filter(episodeData -> episodeData.getTitle().toUpperCase().contains(titleSlice.toUpperCase()))
+//                       .findFirst();
+//        if(collectedEpisode.isPresent()) {
+//            System.out.println(collectedEpisode.get());
+//        } else {
+//            System.out.println("Episode not find!");
+//        }
 
 //        System.out.println("\nTop 10 episodes by IMDB:");
 //        episodeDataList.stream()
@@ -81,6 +81,23 @@ public class Main {
 //                               " - Episode: " + episodeData.getTitle() +
 //                               " - Release date: " + episodeData.getReleaseDate()
 //                       ));
+
+        Map<Integer, Double> seasonRatings = episodeDataList.stream()
+                .filter(episodeData -> episodeData.getImdbRating() > 0.0)
+                .collect(Collectors.groupingBy(EpisodeData::getSeason,
+                        Collectors.averagingDouble(EpisodeData::getImdbRating)));
+
+        System.out.println(seasonRatings);
+
+        DoubleSummaryStatistics est = episodeDataList.stream()
+                .filter(episodeData -> episodeData.getImdbRating() > 0.0)
+                .collect(Collectors.summarizingDouble(EpisodeData::getImdbRating));
+
+        System.out.println("Average: " + est.getAverage());
+        System.out.println("Best episode: " + est.getMax());
+        System.out.println("Worst episode: " + est.getMin());
+        System.out.println("Rated episodes: " + est.getCount());
+
     }
 }
 
